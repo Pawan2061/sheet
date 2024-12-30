@@ -11,6 +11,6 @@ const app = express();
 app.use(express.json());
 app.use("/api/v1", approuter);
 
-app.listen(8080, () => {
+app.listen(3001, () => {
   console.log(`working on port ${8080}`);
 });
