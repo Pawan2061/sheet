@@ -143,6 +143,9 @@ importers:
 
   apps/ws-server:
     dependencies:
+      '@repo/prisma':
+        specifier: workspace:*
+        version: link:../../packages/prisma
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0

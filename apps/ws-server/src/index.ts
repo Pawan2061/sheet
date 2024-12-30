@@ -1,9 +1,9 @@
 import express from "express";
 import { WebSocketServer, WebSocket } from "ws";
-import { Mysocket } from "./interface";
+import { Mysocket, payload } from "./interface";
 import { handleJoin, handleLeave, handleMessage } from "./service";
 
-let spaces = new Map<string, Mysocket[]>();
+export let sheets = new Map<string, Mysocket[]>();
 
 const wss = new WebSocketServer({
   port: 8080,
@@ -18,13 +18,12 @@ wss.on("connection", async (ws: Mysocket) => {
     const data = JSON.parse(message.toString());
     console.log(data);
 
-    const { type } = data;
-    console.log(type, "type is here");
+    const wsData: payload = data;
 
-    switch (type) {
+    console.log(wsData.type, "type is here");
+
+    switch (wsData.type) {
       case "join":
-        console.log("inside the join");
-
         handleJoin(ws);
         break;
 
@@ -34,7 +33,7 @@ wss.on("connection", async (ws: Mysocket) => {
         handleLeave(ws);
         break;
 
-      case "message":
+      case "work":
         console.log("inside the message");
 
         handleMessage(ws);

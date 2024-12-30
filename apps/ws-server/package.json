@@ -16,6 +16,7 @@
     "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
+    "@repo/prisma": "workspace:*",
     "@types/express": "^5.0.0",
     "@types/ws": "^8.5.13",
     "express": "^4.21.2",
