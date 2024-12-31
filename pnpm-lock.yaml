@@ -91,12 +91,24 @@ importers:
       '@tiptap/core':
         specifier: ^2.11.0
         version: 2.11.0(@tiptap/pm@2.10.4)
+      '@tiptap/extension-bold':
+        specifier: ^2.11.0
+        version: 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
+      '@tiptap/extension-bubble-menu':
+        specifier: ^2.11.0
+        version: 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
+      '@tiptap/extension-code-block':
+        specifier: ^2.11.0
+        version: 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-document':
         specifier: ^2.11.0
         version: 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
       '@tiptap/extension-dropcursor':
         specifier: ^2.11.0
         version: 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
+      '@tiptap/extension-heading':
+        specifier: ^2.11.0
+        version: 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
       '@tiptap/extension-image':
         specifier: ^2.10.4
         version: 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
@@ -130,6 +142,9 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^2.10.4
         version: 2.10.4
+      '@tiptap/suggestion':
+        specifier: ^2.11.0
+        version: 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -145,6 +160,9 @@ importers:
       react-quill:
         specifier: ^2.0.0
         version: 2.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      tippy.js:
+        specifier: ^6.3.7
+        version: 6.3.7
     devDependencies:
       '@eslint/js':
         specifier: ^9.17.0
@@ -951,13 +969,13 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.7.0
 
-  '@tiptap/extension-bold@2.10.4':
-    resolution: {integrity: sha512-SdO4oFQKaERCGfwOc1CLYQRtThENam2KWfWmvpsymknokt5qYzU57ft0SE1HQV9vVYEzZ9HrWIgv2xrgu0g9kg==}
+  '@tiptap/extension-bold@2.11.0':
+    resolution: {integrity: sha512-3x9BQZHYD5xFA0pCEneEMHZyIoxYo4NKcbhR4CLxGad1Xd+5g109nr1+eZ1JgvnChkeVf1eD6SaQE2A28lxR5g==}
     peerDependencies:
       '@tiptap/core': ^2.7.0
 
-  '@tiptap/extension-bubble-menu@2.10.4':
-    resolution: {integrity: sha512-GVtZwJaQyLBptMsmDtYl5GEobd1Uu7C9sc9Z+PdXwMuxmFfg+j07bCKCj5JJj/tjgXCSLVxWdTlDHxNrgzQHjw==}
+  '@tiptap/extension-bubble-menu@2.11.0':
+    resolution: {integrity: sha512-21KyB7+QSQjw72Oxzs3Duw9WErAUrigFZCyoCZNjp24wP7mFVsy1jAcnRiAi8pBVwlwHBZ29IW1PeavqCSFFVA==}
     peerDependencies:
       '@tiptap/core': ^2.7.0
       '@tiptap/pm': ^2.7.0
@@ -967,8 +985,8 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.7.0
 
-  '@tiptap/extension-code-block@2.10.4':
-    resolution: {integrity: sha512-qS4jnbJqghNMT2+B+GQ807ATgqkL9OQ//NlL+ZwVSe+DPDduNA9B6IB9SrWENDfOnzekpi7kcEcm+RenELARRQ==}
+  '@tiptap/extension-code-block@2.11.0':
+    resolution: {integrity: sha512-8of3qTOLjpveHBrrk8KVliSUVd6R2i2TNrBj0f/21HcFVAy0fP++02p6vI6UPOhwM3+p3CprGdSM48DFCu1rqw==}
     peerDependencies:
       '@tiptap/core': ^2.7.0
       '@tiptap/pm': ^2.7.0
@@ -1006,8 +1024,8 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.7.0
 
-  '@tiptap/extension-heading@2.10.4':
-    resolution: {integrity: sha512-7D0h0MIvE97Gx3Qwuo2xnPDK07WfCnyh4tpOPBOus4e1g6sgxVkwDwhbkYWiwvIrf4BUVJflnke/DEDCVp6/Eg==}
+  '@tiptap/extension-heading@2.11.0':
+    resolution: {integrity: sha512-vrYvxibsY7/Sd2wYQDZ8AfIORfFi/UHZAWI7JmaMtDkILuMLYQ+jXb7p4K2FFW/1nN7C8QqgLLFI5AfjZUusgw==}
     peerDependencies:
       '@tiptap/core': ^2.7.0
 
@@ -1102,6 +1120,12 @@ packages:
 
   '@tiptap/starter-kit@2.10.4':
     resolution: {integrity: sha512-tu/WCs9Mkr5Nt8c3/uC4VvAbQlVX0OY7ygcqdzHGUeG9zP3twdW7o5xM3kyDKR2++sbVzqu5Ll5qNU+1JZvPGQ==}
+
+  '@tiptap/suggestion@2.11.0':
+    resolution: {integrity: sha512-f+KcczhzEEy2f7/0N/RSID+Z6NjxCX6ab26NLfWZxdaEm/J+vQ2Pqh/e5Z59vMfKiC0DJXVcO0rdv2LBh23qDw==}
+    peerDependencies:
+      '@tiptap/core': ^2.7.0
+      '@tiptap/pm': ^2.7.0
 
   '@tootallnate/quickjs-emscripten@0.23.0':
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
@@ -4311,11 +4335,11 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.10.4)
 
-  '@tiptap/extension-bold@2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))':
+  '@tiptap/extension-bold@2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))':
     dependencies:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.10.4)
 
-  '@tiptap/extension-bubble-menu@2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)':
+  '@tiptap/extension-bubble-menu@2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)':
     dependencies:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.10.4)
       '@tiptap/pm': 2.10.4
@@ -4325,7 +4349,7 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.10.4)
 
-  '@tiptap/extension-code-block@2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)':
+  '@tiptap/extension-code-block@2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)':
     dependencies:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.10.4)
       '@tiptap/pm': 2.10.4
@@ -4358,7 +4382,7 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.10.4)
 
-  '@tiptap/extension-heading@2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))':
+  '@tiptap/extension-heading@2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))':
     dependencies:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.10.4)
 
@@ -4449,7 +4473,7 @@ snapshots:
   '@tiptap/react@2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.10.4)
-      '@tiptap/extension-bubble-menu': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
+      '@tiptap/extension-bubble-menu': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-floating-menu': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/pm': 2.10.4
       '@types/use-sync-external-store': 0.0.6
@@ -4462,15 +4486,15 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.11.0(@tiptap/pm@2.10.4)
       '@tiptap/extension-blockquote': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
-      '@tiptap/extension-bold': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
+      '@tiptap/extension-bold': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
       '@tiptap/extension-bullet-list': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
       '@tiptap/extension-code': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
-      '@tiptap/extension-code-block': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
+      '@tiptap/extension-code-block': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-document': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
       '@tiptap/extension-dropcursor': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-gapcursor': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-hard-break': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
-      '@tiptap/extension-heading': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
+      '@tiptap/extension-heading': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
       '@tiptap/extension-history': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-horizontal-rule': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-italic': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
@@ -4480,6 +4504,11 @@ snapshots:
       '@tiptap/extension-strike': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
       '@tiptap/extension-text': 2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
       '@tiptap/extension-text-style': 2.10.4(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))
+      '@tiptap/pm': 2.10.4
+
+  '@tiptap/suggestion@2.11.0(@tiptap/core@2.11.0(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)':
+    dependencies:
+      '@tiptap/core': 2.11.0(@tiptap/pm@2.10.4)
       '@tiptap/pm': 2.10.4
 
   '@tootallnate/quickjs-emscripten@0.23.0': {}

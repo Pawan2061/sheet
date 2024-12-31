@@ -4,6 +4,7 @@ import { Editor } from "@tiptap/core";
 import Document from "@tiptap/extension-document";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import Image from "@tiptap/extension-image";
+import Heading from "@tiptap/extension-heading";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import Youtube from "@tiptap/extension-youtube";
@@ -32,10 +33,14 @@ export default function Tiptap() {
       }),
       Text,
       Dropcursor,
+      Heading.configure({
+        levels: [1, 2, 3],
+      }),
       Paragraph,
       Document,
       CustomYoutubeExtension,
     ],
+
     content: "",
     editorProps: {
       attributes: {
@@ -74,7 +79,7 @@ export default function Tiptap() {
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-6">
+    <div className="w-full max-w-6xl mx-auto p-6 ">
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="flex gap-4 mb-6">
           <button
@@ -91,13 +96,18 @@ export default function Tiptap() {
             <Film className="w-4 h-4" />
             <span>Add Video</span>
           </button>
-          {/* <button
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            onClick={addTable}
+          <button
+            onClick={() => {
+              console.log(editor.isActive);
+
+              editor.chain().focus().setHeading({ level: 1 }).run();
+            }}
+            className={
+              editor.isActive("heading", { level: 1 }) ? "is-active" : ""
+            }
           >
-            <LucideTable className="w-4 h-4" />
-            <span>Add Table</span>
-          </button> */}
+            H1
+          </button>
         </div>
 
         <div className="border rounded-lg p-4 min-h-[400px] bg-gray-50">
