@@ -1,10 +1,18 @@
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
+  const token = localStorage.getItem("auth");
   const navigate = useNavigate();
   return (
     <nav className="p-5 flex justify-between">
-      <div className="text-2xl font-semibold">tipTion</div>
+      <div
+        className="text-2xl font-semibold cursor-pointer"
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        tipTion
+      </div>
       <div>
         <button
           onClick={() => {

@@ -11,6 +11,7 @@ import Youtube from "@tiptap/extension-youtube";
 import { debounce } from "lodash";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { Film, Image as ImageIcon } from "lucide-react";
+import { motion } from "framer-motion";
 
 const CustomYoutubeExtension = Youtube.configure({
   HTMLAttributes: {
@@ -110,9 +111,14 @@ export default function Tiptap() {
           </button>
         </div>
 
-        <div className="border rounded-lg p-4 min-h-[400px] bg-gray-50">
+        <motion.div
+          className="border rounded-lg p-4 min-h-[400px] bg-gray-50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 3 }}
+        >
           <EditorContent editor={editor} />
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Hero() {
+  const navigate = useNavigate();
   return (
     <section className="mx-auto py-20 px-10 text-center space-y-6 max-w-6xl">
       <div>
@@ -20,7 +23,19 @@ export default function Hero() {
         Make your own forms along with tipTion
       </h1>
       <div>
-        <button className="bg-[#0070D7] hover:bg-blue-600 py-2 text-white rounded-lg px-2">
+        <button
+          onClick={() => {
+            navigate(
+              `/${`room.${new Date()
+                .getFullYear()
+                .toString()
+                .slice(
+                  -2
+                )}${new Date().getMonth() + 1}${new Date().getDate()}-ok`}`
+            );
+          }}
+          className="bg-[#0070D7] hover:bg-blue-600 py-2 text-white rounded-lg px-2"
+        >
           Create a free doc
         </button>
       </div>

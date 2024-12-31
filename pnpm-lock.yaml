@@ -157,6 +157,9 @@ importers:
       axios:
         specifier: ^1.7.9
         version: 1.7.9
+      framer-motion:
+        specifier: ^11.15.0
+        version: 11.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -175,6 +178,9 @@ importers:
       react-router-dom:
         specifier: ^7.1.1
         version: 7.1.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      recoil:
+        specifier: ^0.7.7
+        version: 0.7.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tippy.js:
         specifier: ^6.3.7
         version: 6.3.7
@@ -2171,6 +2177,20 @@ packages:
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
 
+  framer-motion@11.15.0:
+    resolution: {integrity: sha512-MLk8IvZntxOMg7lDBLw2qgTHHv664bYoYmnFTmE0Gm/FW67aOJk0WM3ctMcG+Xhcv+vh5uyyXwxvxhSeJzSe+w==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   fresh@0.5.2:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
@@ -2290,6 +2310,9 @@ packages:
 
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
+
+  hamt_plus@1.0.2:
+    resolution: {integrity: sha512-t2JXKaehnMb9paaYA7J0BX8QQAY8lwfQ9Gjf4pg/mk4krt+cmwmU652HOoWonf+7+EQV97ARPMhhVgU1ra2GhA==}
 
   handlebars@4.7.8:
     resolution: {integrity: sha512-vafaFqs8MZkRrSX7sFVUdo3ap/eNiLnb4IakshzvP56X5Nr1iGKAIqdX6tMlm6HcNRIkr6AxO5jFEoJzzpT8aQ==}
@@ -2790,6 +2813,12 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  motion-dom@11.14.3:
+    resolution: {integrity: sha512-lW+D2wBy5vxLJi6aCP0xyxTxlTfiu+b+zcpVbGVFUxotwThqhdpPRSmX8xztAgtZMPMeU0WGVn/k1w4I+TbPqA==}
+
+  motion-utils@11.14.3:
+    resolution: {integrity: sha512-Xg+8xnqIJTpr0L/cidfTTBFkvRw26ZtGGuIhA94J9PQ2p4mEa06Xx7QVYZH0BP+EpMSaDlu+q0I0mmvwADPsaQ==}
+
   ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
 
@@ -3262,6 +3291,18 @@ packages:
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
+
+  recoil@0.7.7:
+    resolution: {integrity: sha512-8Og5KPQW9LwC577Vc7Ug2P0vQshkv1y3zG3tSSkWMqkWSwHmE+by06L8JtnGocjW6gcCvfwB3YtrJG6/tWivNQ==}
+    peerDependencies:
+      react: '>=16.13.1'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
 
   reflect.getprototypeof@1.0.6:
     resolution: {integrity: sha512-fmfw4XgoDke3kdI6h4xcUz1dG8uaiv5q9gcEwLS4Pnth2kxT+GZ7YehS1JTMGBQmtV7Y4GFGbs2re2NqhdozUg==}
@@ -5962,6 +6003,15 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
+  framer-motion@11.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      motion-dom: 11.14.3
+      motion-utils: 11.14.3
+      tslib: 2.8.1
+    optionalDependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
   fresh@0.5.2: {}
 
   fs-extra@10.1.0:
@@ -6112,6 +6162,8 @@ snapshots:
       tinygradient: 1.1.5
 
   graphemer@1.4.0: {}
+
+  hamt_plus@1.0.2: {}
 
   handlebars@4.7.8:
     dependencies:
@@ -6600,6 +6652,10 @@ snapshots:
       minimist: 1.2.8
 
   mkdirp@1.0.4: {}
+
+  motion-dom@11.14.3: {}
+
+  motion-utils@11.14.3: {}
 
   ms@2.0.0: {}
 
@@ -7150,6 +7206,13 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
+
+  recoil@0.7.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      hamt_plus: 1.0.2
+      react: 18.3.1
+    optionalDependencies:
+      react-dom: 18.3.1(react@18.3.1)
 
   reflect.getprototypeof@1.0.6:
     dependencies:
