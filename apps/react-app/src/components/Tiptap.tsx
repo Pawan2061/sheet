@@ -10,7 +10,7 @@ import Text from "@tiptap/extension-text";
 import Youtube from "@tiptap/extension-youtube";
 import { debounce } from "lodash";
 import { EditorContent, useEditor } from "@tiptap/react";
-import { Film, Image as ImageIcon, Table as LucideTable } from "lucide-react";
+import { Film, Image as ImageIcon } from "lucide-react";
 
 const CustomYoutubeExtension = Youtube.configure({
   HTMLAttributes: {
