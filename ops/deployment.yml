@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docs-fe-deployment
+  labels:
+    app: docs-fe
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: docs-fe
+  template:
+    metadata:
+      labels:
+        app: docs-fe
+    spec:
+      containers:
+      - name: docs-fe
+        image: pawan063/tiptapfrontend
+        ports:
+        - containerPort: 80

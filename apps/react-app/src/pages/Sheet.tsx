@@ -1,5 +1,13 @@
 import Tiptap from "../components/Tiptap";
+
 export default function Sheet() {
+  // const editor = useEditor({
+  //   extensions: [StarterKit],
+  //   content: "<p>Hello World!</p>",
+  // });
+  // useEffect(() => {
+  //   console.log(editor, "editor is here");
+  // }, []);
   return (
     <div className="App container mx-auto px-16 flex flex-col gap-4 max-w-[100ch]">
       <header className="flex flex-col gap-2 py-4 border-b border-slate-400">
@@ -23,17 +31,6 @@ export default function Sheet() {
             Tiptap.
           </a>
         </p>
-
-        {/* <p className="text-md pl-[1px]">
-          A Big thank you to all my{" "}
-          <a
-            className="text-blue-400 underline"
-            href="https://github.com/sponsors/sereneinserenade#sponsors"
-          >
-            <i className="i-mdi-heart-outline" /> sponsors.
-          </a>{" "}
-          You people are awesome.
-        </p> */}
       </header>
       <main className="flex justify-start w-full">
         <Tiptap />

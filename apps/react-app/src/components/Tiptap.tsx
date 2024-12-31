@@ -5,13 +5,18 @@ import Document from "@tiptap/extension-document";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import Image from "@tiptap/extension-image";
 import Heading from "@tiptap/extension-heading";
+import Strike from "@tiptap/extension-strike";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
+import Italic from "@tiptap/extension-italic";
+import Code from "@tiptap/extension-code";
+import Bold from "@tiptap/extension-bold";
 import Youtube from "@tiptap/extension-youtube";
 import { debounce } from "lodash";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { Film, Image as ImageIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import BubbleMenuTip from "./ui/bubble";
 
 const CustomYoutubeExtension = Youtube.configure({
   HTMLAttributes: {
@@ -37,8 +42,16 @@ export default function Tiptap() {
       Heading.configure({
         levels: [1, 2, 3],
       }),
+
       Paragraph,
       Document,
+      Strike,
+      Bold,
+      Code,
+
+      Italic,
+
+      Dropcursor,
       CustomYoutubeExtension,
     ],
 
@@ -47,7 +60,7 @@ export default function Tiptap() {
       attributes: {
         spellcheck: "false",
         class:
-          "focus:outline-none w-full prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none",
+          "focus:outline-none w-full prose prose-2xl sm:prose lg:prose-xl xl:prose-2xl max-w-none",
       },
     },
     onUpdate: debounce(({ editor: e }) => {
@@ -76,6 +89,8 @@ export default function Tiptap() {
   }, [editor]);
 
   if (!editor) {
+    console.log("inside the ediroo");
+
     return null;
   }
 
@@ -118,6 +133,7 @@ export default function Tiptap() {
           transition={{ duration: 3 }}
         >
           <EditorContent editor={editor} />
+          {editor && <BubbleMenuTip editor={editor} />}
         </motion.div>
       </div>
     </div>
