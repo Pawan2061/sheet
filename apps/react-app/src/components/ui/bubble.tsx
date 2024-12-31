@@ -1,5 +1,4 @@
-import React from "react";
-import { BubbleMenu as TiptapBubbleMenu, Editor } from "@tiptap/react";
+import { BubbleMenu as TiptapBubbleMenu } from "@tiptap/react";
 import {
   Bold,
   Italic,
@@ -8,10 +7,6 @@ import {
   Code,
   Highlighter,
 } from "lucide-react";
-
-interface BubbleMenuProps {
-  editor: Editor;
-}
 
 export const BubbleMenuTip = ({ editor }: any) => {
   const addLink = () => {

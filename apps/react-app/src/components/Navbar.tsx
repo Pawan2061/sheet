@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
-  const token = localStorage.getItem("auth");
+  // const token = localStorage.getItem("auth");
   const navigate = useNavigate();
   return (
     <nav className="p-5 flex justify-between">

@@ -5,7 +5,10 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "start:backend":"cd /app/apps/http-backend && pnpm run start",
+    "start:frontend":"cd /app/apps/react-app && pnpm run start"
+
   },
   "devDependencies": {
     "prettier": "^3.2.5",
