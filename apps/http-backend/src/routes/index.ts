@@ -1,12 +1,8 @@
 import express, { Router } from "express";
-import bcrypt from "bcrypt";
-import { prismaClient } from "@repo/prisma/client";
-import jwt from "jsonwebtoken";
-import { JWT_PASSWORD } from "../config";
-import { JwtPayload } from "../interface/types";
 import { authMiddleware, createToken } from "../middleware";
 import { login, signup } from "../controllers/users";
 import { createSheet, getSheets, getSheetsBySlug } from "../controllers/sheet";
+import { createAnswer } from "../controllers/lchain";
 
 export const approuter: Router = express.Router();
 approuter.post("/signup", signup);
@@ -20,3 +16,5 @@ approuter.put("/sheet", (req, res) => {});
 approuter.get("/sheets/:slug", authMiddleware, getSheetsBySlug);
 
 approuter.get("/sheets", authMiddleware, getSheets);
+
+// approuter.post("/ask", createAnswer);

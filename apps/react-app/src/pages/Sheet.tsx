@@ -13,7 +13,7 @@ export default function Sheet() {
           </a>
           <a
             className="text-blue-400 border border-blue-400 rounded-xl p-2 flex items-center justify-center hover:text-white hover:bg-blue-400 transition-all duration-200"
-            href="https://github.com/sponsors/sereneinserenade"
+            href="https://github.com/Pawan2061/tiption"
           >
             <i className="i-mdi-heart mr-2 scale-150" /> Give me a star
           </a>
