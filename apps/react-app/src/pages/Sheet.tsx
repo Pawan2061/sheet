@@ -1,13 +1,6 @@
 import Tiptap from "../components/Tiptap";
 
 export default function Sheet() {
-  // const editor = useEditor({
-  //   extensions: [StarterKit],
-  //   content: "<p>Hello World!</p>",
-  // });
-  // useEffect(() => {
-  //   console.log(editor, "editor is here");
-  // }, []);
   return (
     <div className="App container mx-auto px-16 flex flex-col gap-4 max-w-[100ch]">
       <header className="flex flex-col gap-2 py-4 border-b border-slate-400">

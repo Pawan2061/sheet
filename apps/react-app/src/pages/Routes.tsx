@@ -7,8 +7,9 @@ export default function Home() {
     <div>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/:id" element={<Sheet />} />
         <Route path="/join" element={<Join />} />
+
+        <Route path="/:id" element={<Sheet />} />
       </Routes>
     </div>
   );
