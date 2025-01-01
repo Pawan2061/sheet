@@ -22,7 +22,7 @@ export default function Hero() {
       <h1 className="text-xl text-[#373725]">
         Make your own forms along with tipTion
       </h1>
-      <div>
+      <div className="space-x-6 ">
         <button
           onClick={() => {
             navigate(
@@ -36,7 +36,17 @@ export default function Hero() {
           }}
           className="bg-[#0070D7] hover:bg-blue-600 py-2 text-white rounded-lg px-2"
         >
-          Create a free doc
+          Create
+        </button>
+        <span className="text-xl text-[#373725] ">&lt; A doc &gt;</span>
+
+        <button
+          onClick={() => {
+            navigate("/collab/edit");
+          }}
+          className="bg-[#0070D7] hover:bg-blue-600 py-2 text-white rounded-lg px-2"
+        >
+          Collab
         </button>
       </div>
       <div className="shadow-2xl rounded-lg h-full">

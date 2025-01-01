@@ -33,8 +33,8 @@ wss.on("connection", async (ws: Mysocket) => {
         handleLeave(ws);
         break;
 
-      case "work":
-        console.log("inside the message");
+      case "update":
+        console.log("inside the update message message");
 
         handleMessage(ws);
 

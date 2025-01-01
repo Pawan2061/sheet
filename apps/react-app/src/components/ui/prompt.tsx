@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { Sparkles } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 
 interface AIPromptModalProps {
   isOpen: boolean;

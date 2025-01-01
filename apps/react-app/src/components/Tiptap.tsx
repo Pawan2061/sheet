@@ -30,7 +30,6 @@ const CustomYoutubeExtension = Youtube.configure({
 });
 
 export default function Tiptap() {
-  // const [isStreaming, setIsStreaming] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const logContent = useCallback((editor: Editor) => {

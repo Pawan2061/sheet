@@ -5,11 +5,11 @@ export interface payload {
   payload: {};
 }
 export interface Mysocket extends WebSocket {
-  userId: string;
+  username: string;
   sheetId: string;
 }
 enum PayloadType {
   join = "join",
   leave = "leave",
-  work = "work",
+  update = "update",
 }

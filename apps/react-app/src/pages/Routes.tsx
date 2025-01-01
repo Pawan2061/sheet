@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Landing from "./Landing";
 import Sheet from "./Sheet";
 import Join from "./Join";
+import Collab from "../components/Collab";
 export default function Home() {
   return (
     <div>
@@ -10,6 +11,7 @@ export default function Home() {
         <Route path="/join" element={<Join />} />
 
         <Route path="/:id" element={<Sheet />} />
+        <Route path="/collab/edit" element={<Collab />} />
       </Routes>
     </div>
   );
