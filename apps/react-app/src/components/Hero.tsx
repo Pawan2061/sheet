@@ -1,7 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { authState } from "../recoil/store";
 
 export default function Hero() {
   const navigate = useNavigate();
+  const authdata = useRecoilValue(authState);
+
+  console.log(authdata.isAuthenticated, "auth state is here bros");
+
   return (
     <section className="mx-auto py-20 px-10 text-center space-y-6 max-w-6xl">
       <div>

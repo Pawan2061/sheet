@@ -1,8 +1,8 @@
 import { atom, selector } from "recoil";
 
 export const authState = atom({
-  key: "authState",
-  default: JSON.parse(localStorage.getItem("authState") || "{}") || {
+  key: "user",
+  default: JSON.parse(localStorage.getItem("user") || "{}") || {
     isAuthenticated: false,
     user: null,
     token: null,
@@ -14,6 +14,6 @@ export const authStatePersist = selector({
   get: ({ get }) => get(authState),
   set: ({ set }, newValue) => {
     set(authState, newValue);
-    localStorage.setItem("authState", JSON.stringify(newValue));
+    localStorage.setItem("user", JSON.stringify(newValue));
   },
 });

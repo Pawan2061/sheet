@@ -1,16 +1,26 @@
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { signup, login } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
+import { authState } from "../recoil/store";
+import { SetRecoilState, useRecoilState, useSetRecoilState } from "recoil";
 
 export default function Join() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
+  const [auth, setAuth] = useRecoilState(authState);
 
   const signupMutation = useMutation({
     mutationFn: signup,
     onSuccess: (data) => {
-      console.log(data);
+      console.log(data, "datahere");
+      const authData = {
+        isAuthenticated: true,
+        user: data.user.user,
+      };
+      setAuth(authData);
+      localStorage.setItem("user", JSON.stringify(authData));
+
       navigate("/");
     },
     onError: (error) => {
@@ -21,7 +31,13 @@ export default function Join() {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log(data);
+      const authData = {
+        isAuthenticated: true,
+        user: data,
+      };
+      setAuth(authData);
+      localStorage.setItem("user", JSON.stringify(authData));
+
       navigate("/");
     },
     onError: (error) => {

@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Editor } from "@tiptap/core";
-import { EditorContent, useEditor } from "@tiptap/react";
-import { StarterKit } from "@tiptap/starter-kit";
 import { Users, Wifi, WifiOff, Save } from "lucide-react";
+import { debounce } from "lodash";
 
 interface Message {
   type: "join" | "update";
   payload: {
     sheetId: string;
     content?: string;
+    cursor?: number;
+    user?: {
+      name: string;
+    };
   };
 }
 
@@ -17,6 +19,27 @@ const Collab: React.FC = () => {
   const [isConnected, setIsConnected] = useState(false);
   const websocketRef = useRef<WebSocket | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [user, setUser] = useState({ name: "" });
+  const [cursorPosition, setCursorPosition] = useState(null);
+  const textAreaRef = useRef<HTMLTextAreaElement | any>();
+  let debounceTimeout = useRef<any>(null);
+
+  const sendCursorPosition = debounce((cursorPos) => {
+    console.log("Cursor Position:", cursorPos);
+  }, 300);
+
+  const handleCursorMove = () => {
+    const cursorPos = textAreaRef.current.selectionStart;
+    setCursorPosition(cursorPos);
+
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+
+    debounceTimeout.current = setTimeout(() => {
+      sendCursorPosition(cursorPos);
+    }, 300);
+  };
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8080");
@@ -66,12 +89,27 @@ const Collab: React.FC = () => {
         payload: {
           sheetId: "enfuen",
           content: newContent,
+          cursor: cursorPosition,
+          user: {
+            name: user.name,
+          },
         },
       })
     );
 
     setTimeout(() => setIsSaving(false), 500);
   };
+
+  useEffect(() => {
+    const textArea = textAreaRef.current;
+    textArea.addEventListener("click", handleCursorMove);
+    textArea.addEventListener("keyup", handleCursorMove);
+
+    return () => {
+      textArea.removeEventListener("click", handleCursorMove);
+      textArea.removeEventListener("keyup", handleCursorMove);
+    };
+  }, []);
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -126,6 +164,7 @@ const Collab: React.FC = () => {
         </div>
 
         <textarea
+          ref={textAreaRef}
           className="w-full px-4 py-3 resize-none focus:outline-none min-h-[400px]"
           value={content}
           onChange={handleContentChange}

@@ -1,5 +1,5 @@
 import { sheets } from "..";
-import { Mysocket } from "../interface";
+import { Mysocket, payload } from "../interface";
 
 // export async function handleJoin(ws: Mysocket) {
 //   try {
@@ -64,7 +64,14 @@ export async function handleLeave(ws: Mysocket) {
 }
 export async function handleMessage(
   ws: Mysocket,
-  payload: { content?: string }
+  payload: {
+    sheetId: string;
+    content?: string;
+    user: {
+      name: string;
+    };
+    cursor: number;
+  }
 ) {
   if (!ws.sheetId) return;
 
@@ -73,7 +80,11 @@ export async function handleMessage(
 
   const message = JSON.stringify({
     type: "update",
-    payload: { content: payload.content },
+    payload: {
+      content: payload.content,
+      user: payload.user,
+      cursor: payload.cursor,
+    },
   });
 
   sheetClients.forEach((client) => {

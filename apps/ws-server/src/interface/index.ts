@@ -5,8 +5,13 @@ export interface payload {
   payload: {
     sheetId: string;
     content?: string;
+    user: {
+      name: string;
+    };
+    cursor: number;
   };
 }
+
 export interface Mysocket extends WebSocket {
   username: string;
   sheetId: string;
