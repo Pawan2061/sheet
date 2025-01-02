@@ -2,7 +2,10 @@ import { WebSocket } from "ws";
 
 export interface payload {
   type: PayloadType;
-  payload: {};
+  payload: {
+    sheetId: string;
+    content?: string;
+  };
 }
 export interface Mysocket extends WebSocket {
   username: string;

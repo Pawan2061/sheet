@@ -24,7 +24,7 @@ wss.on("connection", async (ws: Mysocket) => {
 
     switch (wsData.type) {
       case "join":
-        handleJoin(ws);
+        handleJoin(ws, data.payload);
         break;
 
       case "leave":
@@ -36,9 +36,12 @@ wss.on("connection", async (ws: Mysocket) => {
       case "update":
         console.log("inside the update message message");
 
-        handleMessage(ws);
+        handleMessage(ws, data.payload);
 
         break;
     }
+  });
+  ws.on("close", () => {
+    handleLeave(ws);
   });
 });

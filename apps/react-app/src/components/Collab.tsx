@@ -1,4 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+interface Message {
+  type: "join" | "update";
+  payload: {
+    sheetId: string;
+    content?: string;
+  };
+}
 
 const Collab: React.FC = () => {
   const [content, setContent] = useState("");
@@ -21,16 +28,19 @@ const Collab: React.FC = () => {
     };
 
     ws.onmessage = (event) => {
-      const { type, content } = JSON.parse(event.data);
+      const { type, payload } = JSON.parse(event.data);
       if (type === "init" || type === "update") {
         console.log("updating");
 
-        setContent(content || "");
+        setContent(payload.content || "");
       }
     };
 
     ws.onclose = () => setIsConnected(false);
-    ws.onerror = () => setIsConnected(false);
+    ws.onerror = (error) => {
+      console.log(error);
+      setIsConnected(false);
+    };
 
     websocketRef.current = ws;
 
@@ -44,8 +54,10 @@ const Collab: React.FC = () => {
     websocketRef.current?.send(
       JSON.stringify({
         type: "update",
-        docId: "test-document",
-        content: newContent,
+        payload: {
+          sheetId: "enfuen",
+          content: newContent,
+        },
       })
     );
   };
