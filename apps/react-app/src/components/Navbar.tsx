@@ -5,10 +5,16 @@ import { authState } from "../recoil/store";
 
 export default function Navbar() {
   const user = useRecoilValue(authState);
-  console.log(user, "suer is ehr");
-  console.log(user.user.user.username);
 
+  const resetAuth = useResetRecoilState(authState);
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    resetAuth();
+    navigate("/");
+  };
+
   return (
     <nav className="p-5 flex justify-between">
       <div
@@ -25,20 +31,17 @@ export default function Navbar() {
             onClick={() => {
               navigate("/join");
             }}
-            className="text-[#777672] text-sm px-1 rounded-md duration-0 hover:bg-gray-200  py-2"
+            className="text-[#777672] text-sm px-1 rounded-md duration-0 hover:bg-gray-200 py-2"
           >
             Login
           </button>
         ) : (
-          <div className="flex">
-            <h1 className="">{user.user.user.username}</h1>
-
+          <div className="flex items-center space-x-4">
+            <h1 className="text-lg font-medium">{user.user?.username}</h1>
             <LogOut
               color="blue"
               className="cursor-pointer"
-              onClick={() => {
-                useResetRecoilState(authState);
-              }}
+              onClick={handleLogout}
             />
           </div>
         )}

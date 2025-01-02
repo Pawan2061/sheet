@@ -13,8 +13,6 @@ wss.on("connection", async (ws: Mysocket) => {
   console.log("connected");
 
   ws.on("message", async (message) => {
-    ws.send("working fine");
-
     const data = JSON.parse(message.toString());
     console.log(data);
 

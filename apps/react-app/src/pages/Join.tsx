@@ -1,14 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { signup, login } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
 import { authState } from "../recoil/store";
-import { SetRecoilState, useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 export default function Join() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [auth, setAuth] = useRecoilState(authState);
+  const [error, setError] = useState("");
 
   const signupMutation = useMutation({
     mutationFn: signup,
@@ -16,7 +17,7 @@ export default function Join() {
       console.log(data, "datahere");
       const authData = {
         isAuthenticated: true,
-        user: data.user.user,
+        user: data.user,
       };
       setAuth(authData);
       localStorage.setItem("user", JSON.stringify(authData));
@@ -24,6 +25,7 @@ export default function Join() {
       navigate("/");
     },
     onError: (error) => {
+      setError("Can't sign up try again");
       console.log(error);
     },
   });
@@ -41,6 +43,8 @@ export default function Join() {
       navigate("/");
     },
     onError: (error) => {
+      setError("Can't login in try again");
+
       console.log(error);
     },
   });
@@ -114,6 +118,9 @@ export default function Join() {
             {isLogin
               ? "Don't have an account? Sign Up"
               : "Already have an account? Login"}
+          </p>
+          <p className="text-red-300 cursor-pointer" onClick={toggleForm}>
+            {error ? error : ""}
           </p>
         </div>
       </div>

@@ -8,6 +8,15 @@ export default function Hero() {
 
   console.log(authdata.isAuthenticated, "auth state is here bros");
 
+  function handleClick() {
+    console.log(authdata, "da");
+
+    if (!authdata.isAuthenticated) {
+      navigate("/join");
+    } else {
+      navigate("/collab/edit");
+    }
+  }
   return (
     <section className="mx-auto py-20 px-10 text-center space-y-6 max-w-6xl">
       <div>
@@ -47,9 +56,7 @@ export default function Hero() {
         <span className="text-xl text-[#373725] ">&lt; A doc &gt;</span>
 
         <button
-          onClick={() => {
-            navigate("/collab/edit");
-          }}
+          onClick={handleClick}
           className="bg-[#0070D7] hover:bg-blue-600 py-2 text-white rounded-lg px-2"
         >
           Collab

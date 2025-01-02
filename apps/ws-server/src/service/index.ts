@@ -1,28 +1,6 @@
 import { sheets } from "..";
 import { Mysocket, payload } from "../interface";
 
-// export async function handleJoin(ws: Mysocket) {
-//   try {
-//     const { user, sheet } = await findSheetAndUser(ws.username, ws.sheetId);
-//     if (!sheets.has(ws.sheetId)) {
-//       sheets.set(ws.sheetId, []);
-//     }
-//     ws.sheetId = sheet.id;
-//     ws.username = user.username;
-//   } catch (error) {
-//     ws.send(JSON.stringify({ error: error }));
-//   }
-// }
-
-// export async function handleLeave(ws: Mysocket) {
-//   console.log("isnide the handleleave");
-// }
-
-// export async function handleMessage(ws: Mysocket) {
-//   ws.send(JSON.stringify("values"));
-//   console.log("inside the handleMessage");
-// }
-
 export async function handleJoin(ws: Mysocket, payload: { sheetId: string }) {
   try {
     const { sheetId } = payload;
