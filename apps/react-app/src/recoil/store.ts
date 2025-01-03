@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import { recoilPersist } from "recoil-persist";
 
 export const authState = atom({
   key: "user",
@@ -15,5 +16,12 @@ export const authStatePersist = selector({
   set: ({ set }, newValue) => {
     set(authState, newValue);
     localStorage.setItem("user", JSON.stringify(newValue));
+  },
+});
+
+export const sheetState = atom({
+  key: "sheet",
+  default: {
+    sheetName: "",
   },
 });

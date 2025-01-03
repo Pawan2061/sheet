@@ -12,9 +12,10 @@ import {
   AlignCenter,
   AlignRight,
   List,
+  File,
 } from "lucide-react";
 import { useRecoilValue } from "recoil";
-import { authState } from "../recoil/store";
+import { authState, sheetState } from "../recoil/store";
 import { useNavigate } from "react-router-dom";
 
 const Collab: React.FC = () => {
@@ -26,6 +27,7 @@ const Collab: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [userCount, setUserCount] = useState(0);
+  const [sheetName, setSheetName] = useState<string>("");
   const [textStyles, setTextStyles] = useState({
     isBold: false,
     isItalic: false,
@@ -36,7 +38,6 @@ const Collab: React.FC = () => {
   });
 
   const user = useRecoilValue(authState);
-
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const editorRef = useRef<HTMLDivElement>(null);
 
@@ -45,6 +46,9 @@ const Collab: React.FC = () => {
   }
 
   useEffect(() => {
+    const currentSheet = localStorage.getItem("sheet");
+    setSheetName(currentSheet || "Untitled Sheet");
+
     const ws = new WebSocket("ws://localhost:8080");
 
     ws.onopen = () => {
@@ -53,7 +57,7 @@ const Collab: React.FC = () => {
       ws.send(
         JSON.stringify({
           type: "join",
-          payload: { sheetId: "enfuen" },
+          payload: { sheetId: currentSheet },
         })
       );
     };
@@ -68,8 +72,15 @@ const Collab: React.FC = () => {
       }
     };
 
-    ws.onclose = () => setIsConnected(false);
-    ws.onerror = () => setIsConnected(false);
+    ws.onclose = () => {
+      setIsConnected(false);
+      setUserCount((prev) => Math.max(0, prev - 1));
+    };
+
+    ws.onerror = () => {
+      setIsConnected(false);
+      setUserCount((prev) => Math.max(0, prev - 1));
+    };
 
     websocketRef.current = ws;
     return () => ws.close();
@@ -83,7 +94,7 @@ const Collab: React.FC = () => {
     websocketRef.current?.send(
       JSON.stringify({
         type: "update",
-        payload: { sheetId: "enfuen", content: newContent },
+        payload: { sheetId: sheetName, content: newContent },
       })
     );
 
@@ -115,11 +126,24 @@ const Collab: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
+      {/* Sheet Name Display */}
+      <div className="mb-6 text-center">
+        <div className="inline-flex items-center gap-2 bg-white rounded-full px-6 py-3 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <File size={20} className="text-blue-500" />
+          <h1 className="text-2xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            {sheetName}
+          </h1>
+        </div>
+      </div>
+
+      {/* Toast Notification */}
       {showToast && (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 p-4 bg-blue-500 text-white rounded-lg shadow-lg">
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 p-4 bg-blue-500 text-white rounded-lg shadow-lg transition-opacity duration-300">
           <p>{toastMessage}</p>
         </div>
       )}
+
+      {/* Editor Header */}
       <div className="flex items-center justify-between mb-4 bg-white rounded-lg p-3 shadow-sm">
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-semibold">Collaborative Editor</h2>
@@ -129,9 +153,9 @@ const Collab: React.FC = () => {
           </div>
           <div
             onClick={() => navigate("/")}
-            className="rounded-xl bg-gray-100 cursor-pointer"
+            className="rounded-xl bg-gray-100 cursor-pointer p-2 hover:bg-gray-200 transition-colors"
           >
-            <X />
+            <X size={20} />
           </div>
         </div>
         <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100">
@@ -146,47 +170,63 @@ const Collab: React.FC = () => {
         </div>
       </div>
 
+      {/* Editor Body */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        {/* Toolbar */}
         <div className="border-b border-gray-200 px-4 py-2 flex gap-2">
           <button
             onClick={() => toggleStyle("isBold")}
-            className="px-3 py-1 border rounded font-bold"
+            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
+              textStyles.isBold ? "bg-gray-100" : ""
+            }`}
           >
-            <Bold />
+            <Bold size={18} />
           </button>
           <button
             onClick={() => toggleStyle("isItalic")}
-            className="px-3 py-1 border rounded italic"
+            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
+              textStyles.isItalic ? "bg-gray-100" : ""
+            }`}
           >
-            <Italic />
+            <Italic size={18} />
           </button>
           <button
             onClick={() => toggleStyle("isUnderline")}
-            className="px-3 py-1 border rounded underline"
+            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
+              textStyles.isUnderline ? "bg-gray-100" : ""
+            }`}
           >
-            <Underline />
+            <Underline size={18} />
           </button>
+          <div className="h-6 w-px bg-gray-200 mx-2" />
           <button
             onClick={() => setTextAlign("left")}
-            className="px-3 py-1 border rounded"
+            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
+              textStyles.textAlign === "left" ? "bg-gray-100" : ""
+            }`}
           >
-            <AlignLeft />
+            <AlignLeft size={18} />
           </button>
           <button
             onClick={() => setTextAlign("center")}
-            className="px-3 py-1 border rounded"
+            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
+              textStyles.textAlign === "center" ? "bg-gray-100" : ""
+            }`}
           >
-            <AlignCenter />
+            <AlignCenter size={18} />
           </button>
           <button
             onClick={() => setTextAlign("right")}
-            className="px-3 py-1 border rounded"
+            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
+              textStyles.textAlign === "right" ? "bg-gray-100" : ""
+            }`}
           >
-            <AlignRight />
+            <AlignRight size={18} />
           </button>
+          <div className="h-6 w-px bg-gray-200 mx-2" />
           <select
             onChange={(e) => changeFontSize(e.target.value)}
-            className="px-3 py-1 border rounded"
+            className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
             value={textStyles.fontSize}
           >
             <option value="12px">12px</option>
@@ -198,10 +238,11 @@ const Collab: React.FC = () => {
             type="color"
             onChange={(e) => changeTextColor(e.target.value)}
             value={textStyles.color}
-            className="w-8 h-8 border rounded"
+            className="w-8 h-8 border rounded cursor-pointer"
           />
         </div>
 
+        {/* Text Editor */}
         <div ref={editorRef} className="relative">
           <textarea
             ref={textAreaRef}
@@ -220,6 +261,14 @@ const Collab: React.FC = () => {
           />
         </div>
       </div>
+
+      {/* Saving Indicator */}
+      {isSaving && (
+        <div className="fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
+          <Save size={16} className="animate-spin" />
+          <span>Saving...</span>
+        </div>
+      )}
     </div>
   );
 };

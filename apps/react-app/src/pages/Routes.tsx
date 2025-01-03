@@ -11,7 +11,7 @@ export default function Home() {
         <Route path="/join" element={<Join />} />
 
         <Route path="/:id" element={<Sheet />} />
-        <Route path="/collab/edit" element={<Collab />} />
+        <Route path="/collab/:id" element={<Collab />} />
       </Routes>
     </div>
   );
