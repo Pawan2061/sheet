@@ -16,26 +16,24 @@ model User {
 }
 
 model Sheet {
-  id           String  @id @default(uuid())
-  title        String
-  slug         String  @unique
-  events       Event[]
-  userId       String
-  user         User    @relation(fields: [userId], references: [id])
-  content      String
-  lastUpdateId Int
+  id      String  @id @default(uuid())
+  title   String
+  slug    String  @unique
+  events  Event[]
+  userId  String
+  user    User    @relation(fields: [userId], references: [id])
+  content String
 }
 
 model Event {
-  id         Int      @id @default(autoincrement())
-  type       EditType
-  userId     String
-  lineNumber Int
-  column     Int
-  content    String
-  sheetId    String
-  user       User     @relation(fields: [userId], references: [id])
-  sheet      Sheet    @relation(fields: [sheetId], references: [id])
+  id     Int      @id @default(autoincrement())
+  type   EditType
+  userId String
+
+  content String
+  sheetId String
+  user    User   @relation(fields: [userId], references: [id])
+  sheet   Sheet  @relation(fields: [sheetId], references: [id])
 }
 
 enum EditType {

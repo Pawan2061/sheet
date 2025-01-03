@@ -4,8 +4,12 @@ import { prismaClient } from "@repo/prisma/client";
 import { JwtPayload } from "../interface/types";
 import { createToken } from "../middleware";
 export const signup = async (req: Request, res: Response) => {
+  console.log("woring here");
+
   const username = req.body.username;
   const password = req.body.password;
+  console.log("working here alseoooo");
+
   bcrypt.hash(password, 10, async (err, hashedPw) => {
     try {
       const user = await prismaClient.user.create({
@@ -14,11 +18,13 @@ export const signup = async (req: Request, res: Response) => {
           password: hashedPw,
         },
       });
-      res.json({
+      console.log(user, "user is here");
+
+      return res.status(200).json({
         user,
       });
     } catch (e) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Internal server error",
       });
     }

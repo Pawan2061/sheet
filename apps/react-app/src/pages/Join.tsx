@@ -10,6 +10,7 @@ export default function Join() {
   const [isLogin, setIsLogin] = useState(true);
   const [auth, setAuth] = useRecoilState(authState);
   const [error, setError] = useState("");
+  console.log(auth);
 
   const signupMutation = useMutation({
     mutationFn: signup,

@@ -11,6 +11,8 @@ export default function Hero() {
   const wrapperRef = useRef(null);
   const authdata = useRecoilValue(authState);
 
+  console.log(sheet);
+
   useEffect(() => {
     function handleClickOutside(event: any) {
       // @ts-expect-error

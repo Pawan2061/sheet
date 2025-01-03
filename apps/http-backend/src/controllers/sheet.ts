@@ -22,7 +22,6 @@ export const createSheet = async (req: any, res: Response): Promise<any> => {
         title: title,
         content: content,
         userId: req.user.id,
-        lastUpdateId: 3,
       },
     });
     console.log("first done");

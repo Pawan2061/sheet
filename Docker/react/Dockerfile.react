@@ -1,16 +1,20 @@
-FROM node:alpine
+FROM node:18-alpine 
 WORKDIR /app
-RUN npm install -g pnpm
+
+RUN corepack enable
+RUN corepack prepare pnpm@7.18.0 --activate
+
 COPY ./package.json .
 COPY ./pnpm-lock.yaml .
-COPY ./pnpm-workspace.yaml .
+COPY pnpm-workspace.yaml .
+COPY turbo.json .
 
-COPY ./turbo.json .
-COPY  packages ./packages 
-COPY apps/react-app ./apps/react-app 
+COPY packages ./packages
+COPY apps/react-app ./apps/react-app
+
 RUN pnpm install
 RUN pnpm build
 
+EXPOSE 5173
 
 CMD ["pnpm","start:frontend"]
-
