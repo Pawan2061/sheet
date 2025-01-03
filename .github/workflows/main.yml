@@ -51,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Docker/backend/Dockerfile.react
+          file: Docker/backend/Dockerfile.backend
           push: true
           tags: pawan063/tiptapbackend
 
