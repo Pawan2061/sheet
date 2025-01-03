@@ -1,5 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Users, Wifi, WifiOff, Save, X } from "lucide-react";
+import {
+  Users,
+  Wifi,
+  WifiOff,
+  Save,
+  X,
+  Bold,
+  Italic,
+  Underline,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  List,
+} from "lucide-react";
 import { useRecoilValue } from "recoil";
 import { authState } from "../recoil/store";
 import { useNavigate } from "react-router-dom";
@@ -13,20 +26,19 @@ const Collab: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [userCount, setUserCount] = useState(0);
-  const [isBold, setIsBold] = useState(false);
-  const [isItalic, setIsItalic] = useState(false);
+  const [textStyles, setTextStyles] = useState({
+    isBold: false,
+    isItalic: false,
+    isUnderline: false,
+    textAlign: "left",
+    fontSize: "16px",
+    color: "#000000",
+  });
 
   const user = useRecoilValue(authState);
 
-  const textAreaRef: any = useRef<HTMLTextAreaElement | null>(null);
+  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const editorRef = useRef<HTMLDivElement>(null);
-  console.log(user.user.username, "user is me");
-  const getStyles = () => {
-    return {
-      fontWeight: isBold ? "bold" : "normal",
-      fontStyle: isItalic ? "italic" : "normal",
-    };
-  };
 
   if (!user) {
     navigate("/join");
@@ -37,27 +49,20 @@ const Collab: React.FC = () => {
 
     ws.onopen = () => {
       setIsConnected(true);
-      console.log("here");
-
-      setUserCount(userCount + 1);
+      setUserCount((prev) => prev + 1);
       ws.send(
         JSON.stringify({
           type: "join",
-          payload: {
-            sheetId: "enfuen",
-          },
+          payload: { sheetId: "enfuen" },
         })
       );
     };
 
     ws.onmessage = (event) => {
       const { type, payload } = JSON.parse(event.data);
-      console.log(type, "type s here and ");
-
       if (type === "init" || type === "update") {
         setToastMessage(`${user.user.username} has joined!`);
         setShowToast(true);
-
         setTimeout(() => setShowToast(false), 3000);
         setContent(payload.content || "");
       }
@@ -72,45 +77,46 @@ const Collab: React.FC = () => {
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = e.target.value;
-
     setContent(newContent);
-
     setIsSaving(true);
 
     websocketRef.current?.send(
       JSON.stringify({
         type: "update",
-        payload: {
-          sheetId: "enfuen",
-          content: newContent,
-          user: {
-            name: user?.user.username,
-          },
-        },
+        payload: { sheetId: "enfuen", content: newContent },
       })
     );
 
     setTimeout(() => setIsSaving(false), 500);
   };
-  const handleBold = () => {
-    setIsBold(!isBold);
-    textAreaRef.current.focus();
+
+  const toggleStyle = (style: keyof typeof textStyles) => {
+    setTextStyles((prev) => ({
+      ...prev,
+      [style]: !prev[style],
+    }));
+    textAreaRef.current?.focus();
   };
 
-  const handleItalic = () => {
-    setIsItalic(!isItalic);
-    textAreaRef.current.focus();
+  const changeFontSize = (size: string) => {
+    setTextStyles((prev) => ({ ...prev, fontSize: size }));
+    textAreaRef.current?.focus();
   };
-  const handleLeave = () => {
-    navigate("/");
 
-    console.log("leave");
+  const changeTextColor = (color: string) => {
+    setTextStyles((prev) => ({ ...prev, color }));
+    textAreaRef.current?.focus();
+  };
+
+  const setTextAlign = (align: string) => {
+    setTextStyles((prev) => ({ ...prev, textAlign: align }));
+    textAreaRef.current?.focus();
   };
 
   return (
     <div className="max-w-4xl mx-auto p-4">
       {showToast && (
-        <div className="fixed bottom-4 left-1/2 transform  -translate-x-1/2 p-4 bg-blue-500 text-white rounded-lg shadow-lg">
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 p-4 bg-blue-500 text-white rounded-lg shadow-lg">
           <p>{toastMessage}</p>
         </div>
       )}
@@ -122,7 +128,7 @@ const Collab: React.FC = () => {
             <span className="text-sm text-gray-600">{userCount} online</span>
           </div>
           <div
-            onClick={handleLeave}
+            onClick={() => navigate("/")}
             className="rounded-xl bg-gray-100 cursor-pointer"
           >
             <X />
@@ -141,36 +147,59 @@ const Collab: React.FC = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="border-b border-gray-200 px-4 py-2">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              {isSaving ? (
-                <div className="flex items-center gap-1">
-                  <Save size={14} className="animate-spin" />
-                  Saving...
-                </div>
-              ) : (
-                <div className="flex items-center gap-1">
-                  <Save size={14} />
-                  Saved
-                </div>
-              )}
-              <button
-                onClick={handleBold}
-                className={`px-3 py-1 border rounded hover:bg-gray-50 font-bold
-            ${isBold ? "bg-blue-100" : "bg-white"}`}
-              >
-                B
-              </button>
-              <button
-                onClick={handleItalic}
-                className={`px-3 py-1 border rounded hover:bg-gray-50 italic
-            ${isItalic ? "bg-blue-100" : "bg-white"}`}
-              >
-                I
-              </button>
-            </div>
-          </div>
+        <div className="border-b border-gray-200 px-4 py-2 flex gap-2">
+          <button
+            onClick={() => toggleStyle("isBold")}
+            className="px-3 py-1 border rounded font-bold"
+          >
+            <Bold />
+          </button>
+          <button
+            onClick={() => toggleStyle("isItalic")}
+            className="px-3 py-1 border rounded italic"
+          >
+            <Italic />
+          </button>
+          <button
+            onClick={() => toggleStyle("isUnderline")}
+            className="px-3 py-1 border rounded underline"
+          >
+            <Underline />
+          </button>
+          <button
+            onClick={() => setTextAlign("left")}
+            className="px-3 py-1 border rounded"
+          >
+            <AlignLeft />
+          </button>
+          <button
+            onClick={() => setTextAlign("center")}
+            className="px-3 py-1 border rounded"
+          >
+            <AlignCenter />
+          </button>
+          <button
+            onClick={() => setTextAlign("right")}
+            className="px-3 py-1 border rounded"
+          >
+            <AlignRight />
+          </button>
+          <select
+            onChange={(e) => changeFontSize(e.target.value)}
+            className="px-3 py-1 border rounded"
+            value={textStyles.fontSize}
+          >
+            <option value="12px">12px</option>
+            <option value="16px">16px</option>
+            <option value="20px">20px</option>
+            <option value="24px">24px</option>
+          </select>
+          <input
+            type="color"
+            onChange={(e) => changeTextColor(e.target.value)}
+            value={textStyles.color}
+            className="w-8 h-8 border rounded"
+          />
         </div>
 
         <div ref={editorRef} className="relative">
@@ -180,7 +209,14 @@ const Collab: React.FC = () => {
             value={content}
             onChange={handleContentChange}
             placeholder="Start typing here..."
-            style={getStyles()}
+            style={{
+              fontWeight: textStyles.isBold ? "bold" : "normal",
+              fontStyle: textStyles.isItalic ? "italic" : "normal",
+              textDecoration: textStyles.isUnderline ? "underline" : "none",
+              textAlign: textStyles.textAlign as "left" | "center" | "right",
+              fontSize: textStyles.fontSize,
+              color: textStyles.color,
+            }}
           />
         </div>
       </div>

@@ -1,7 +1,4 @@
-import Collab from "./components/Collab";
 import Navbar from "./components/Navbar";
-import StyledTextAreaEditor from "./components/ui/pawan";
-import TextAreaEditor from "./components/ui/pawan";
 
 import Home from "./pages/Routes";
 
