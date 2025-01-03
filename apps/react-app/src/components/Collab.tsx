@@ -11,11 +11,11 @@ import {
   AlignLeft,
   AlignCenter,
   AlignRight,
-  List,
   File,
+  Download,
 } from "lucide-react";
 import { useRecoilValue } from "recoil";
-import { authState, sheetState } from "../recoil/store";
+import { authState } from "../recoil/store";
 import { useNavigate } from "react-router-dom";
 
 const Collab: React.FC = () => {
@@ -36,6 +36,61 @@ const Collab: React.FC = () => {
     fontSize: "16px",
     color: "#000000",
   });
+
+  const handleExport = () => {
+    try {
+      const styledContent = `
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 20px;
+                color: ${textStyles.color};
+                font-size: ${textStyles.fontSize};
+                text-align: ${textStyles.textAlign};
+              }
+              .content {
+                ${textStyles.isBold ? "font-weight: bold;" : ""}
+                ${textStyles.isItalic ? "font-style: italic;" : ""}
+                ${textStyles.isUnderline ? "text-decoration: underline;" : ""}
+              }
+            </style>
+          </head>
+          <body>
+            <div class="content">
+              ${content.replace(/\n/g, "<br>")}
+            </div>
+          </body>
+          </html>
+        `;
+
+      const blob = new Blob([styledContent], {
+        type: "text/html;charset=utf-8",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${sheetName || "document"}.html`;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      window.URL.revokeObjectURL(url);
+
+      setToastMessage("Document exported successfully!");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    } catch (error) {
+      setToastMessage("Failed to export document. Please try again.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    }
+  };
 
   const user = useRecoilValue(authState);
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -126,7 +181,6 @@ const Collab: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-      {/* Sheet Name Display */}
       <div className="mb-6 text-center">
         <div className="inline-flex items-center gap-2 bg-white rounded-full px-6 py-3 shadow-lg hover:shadow-xl transition-shadow duration-300">
           <File size={20} className="text-blue-500" />
@@ -136,14 +190,12 @@ const Collab: React.FC = () => {
         </div>
       </div>
 
-      {/* Toast Notification */}
       {showToast && (
         <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 p-4 bg-blue-500 text-white rounded-lg shadow-lg transition-opacity duration-300">
           <p>{toastMessage}</p>
         </div>
       )}
 
-      {/* Editor Header */}
       <div className="flex items-center justify-between mb-4 bg-white rounded-lg p-3 shadow-sm">
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-semibold">Collaborative Editor</h2>
@@ -158,21 +210,28 @@ const Collab: React.FC = () => {
             <X size={20} />
           </div>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100">
-          {isConnected ? (
-            <Wifi className="text-green-500" size={16} />
-          ) : (
-            <WifiOff className="text-red-500" size={16} />
-          )}
-          <span className="text-sm font-medium">
-            {isConnected ? "Connected" : "Disconnected"}
-          </span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100">
+            {isConnected ? (
+              <Wifi className="text-green-500" size={16} />
+            ) : (
+              <WifiOff className="text-red-500" size={16} />
+            )}
+            <span className="text-sm font-medium">
+              {isConnected ? "Connected" : "Disconnected"}
+            </span>
+          </div>
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            <Download size={16} />
+            Export
+          </button>
         </div>
       </div>
 
-      {/* Editor Body */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        {/* Toolbar */}
         <div className="border-b border-gray-200 px-4 py-2 flex gap-2">
           <button
             onClick={() => toggleStyle("isBold")}
@@ -242,7 +301,6 @@ const Collab: React.FC = () => {
           />
         </div>
 
-        {/* Text Editor */}
         <div ref={editorRef} className="relative">
           <textarea
             ref={textAreaRef}
@@ -262,7 +320,6 @@ const Collab: React.FC = () => {
         </div>
       </div>
 
-      {/* Saving Indicator */}
       {isSaving && (
         <div className="fixed bottom-4 right-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2">
           <Save size={16} className="animate-spin" />
