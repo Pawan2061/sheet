@@ -3,6 +3,8 @@ import { Editor } from "@tiptap/core";
 import Document from "@tiptap/extension-document";
 import Dropcursor from "@tiptap/extension-dropcursor";
 import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import { Highlight } from "@tiptap/extension-highlight";
 import Heading from "@tiptap/extension-heading";
 import Strike from "@tiptap/extension-strike";
 import Paragraph from "@tiptap/extension-paragraph";
@@ -39,22 +41,23 @@ export default function Tiptap() {
   const editor = useEditor({
     extensions: [
       Document,
-      Paragraph.configure({
-        HTMLAttributes: {
-          class: "ai-prompt-placeholder",
-        },
-      }),
+      Paragraph,
       Text,
-      Heading.configure({ levels: [1, 2, 3] }),
       Bold,
       Italic,
       Strike,
       Code,
+      Heading,
+      Image,
       Dropcursor,
-      Image.configure({
+      Link.configure({
+        openOnClick: false,
         HTMLAttributes: {
-          class: "rounded-lg shadow-lg max-w-full h-auto",
+          class: "text-blue-500 underline",
         },
+      }),
+      Highlight.configure({
+        multicolor: true,
       }),
       CustomYoutubeExtension,
     ],

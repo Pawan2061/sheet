@@ -120,7 +120,7 @@ export const BubbleMenuTip = ({ editor }: any) => {
           <Code size={16} />
         </button>
         <button
-          onClick={() => editor.chain().focus().setFontFamily("cursive").run()}
+          onClick={() => editor.commands.setHighlight({ color: "#ffcc00" })}
           className={`p-1 rounded hover:bg-gray-100 ${
             editor.isActive("textStyle", { fontFamily: "cursive" })
               ? "bg-gray-200"

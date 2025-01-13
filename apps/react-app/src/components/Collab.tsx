@@ -28,73 +28,9 @@ const Collab: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [userCount, setUserCount] = useState(0);
   const [sheetName, setSheetName] = useState<string>("");
-  const [textStyles, setTextStyles] = useState({
-    isBold: false,
-    isItalic: false,
-    isUnderline: false,
-    textAlign: "left",
-    fontSize: "16px",
-    color: "#000000",
-  });
-
-  const handleExport = () => {
-    try {
-      const styledContent = `
-          <html>
-          <head>
-            <meta charset="utf-8">
-            <style>
-              body {
-                font-family: Arial, sans-serif;
-                line-height: 1.6;
-                margin: 20px;
-                color: ${textStyles.color};
-                font-size: ${textStyles.fontSize};
-                text-align: ${textStyles.textAlign};
-              }
-              .content {
-                ${textStyles.isBold ? "font-weight: bold;" : ""}
-                ${textStyles.isItalic ? "font-style: italic;" : ""}
-                ${textStyles.isUnderline ? "text-decoration: underline;" : ""}
-              }
-            </style>
-          </head>
-          <body>
-            <div class="content">
-              ${content.replace(/\n/g, "<br>")}
-            </div>
-          </body>
-          </html>
-        `;
-
-      const blob = new Blob([styledContent], {
-        type: "text/html;charset=utf-8",
-      });
-
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${sheetName || "document"}.html`;
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      window.URL.revokeObjectURL(url);
-
-      setToastMessage("Document exported successfully!");
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-    } catch (error) {
-      setToastMessage("Failed to export document. Please try again.");
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-    }
-  };
+  const editorRef = useRef<HTMLDivElement>(null);
 
   const user = useRecoilValue(authState);
-  const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
-  const editorRef = useRef<HTMLDivElement>(null);
 
   if (!user) {
     navigate("/join");
@@ -123,7 +59,9 @@ const Collab: React.FC = () => {
         setToastMessage(`${user.user.username} has joined!`);
         setShowToast(true);
         setTimeout(() => setShowToast(false), 3000);
-        setContent(payload.content || "");
+        if (editorRef.current) {
+          editorRef.current.innerHTML = payload.content || "";
+        }
       }
     };
 
@@ -141,42 +79,75 @@ const Collab: React.FC = () => {
     return () => ws.close();
   }, []);
 
-  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newContent = e.target.value;
-    setContent(newContent);
-    setIsSaving(true);
+  const handleContentChange = () => {
+    if (editorRef.current) {
+      const newContent = editorRef.current.innerHTML;
+      setIsSaving(true);
 
-    websocketRef.current?.send(
-      JSON.stringify({
-        type: "update",
-        payload: { sheetId: sheetName, content: newContent },
-      })
-    );
+      websocketRef.current?.send(
+        JSON.stringify({
+          type: "update",
+          payload: { sheetId: sheetName, content: newContent },
+        })
+      );
 
-    setTimeout(() => setIsSaving(false), 500);
+      setTimeout(() => setIsSaving(false), 500);
+    }
   };
 
-  const toggleStyle = (style: keyof typeof textStyles) => {
-    setTextStyles((prev) => ({
-      ...prev,
-      [style]: !prev[style],
-    }));
-    textAreaRef.current?.focus();
+  const handleExport = () => {
+    try {
+      if (!editorRef.current) return;
+
+      const styledContent = `
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              line-height: 1.6;
+              margin: 20px;
+            }
+          </style>
+        </head>
+        <body>
+          ${editorRef.current.innerHTML}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob([styledContent], {
+        type: "text/html;charset=utf-8",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${sheetName || "document"}.html`;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      window.URL.revokeObjectURL(url);
+
+      setToastMessage("Document exported successfully!");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    } catch (error) {
+      setToastMessage("Failed to export document. Please try again.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    }
   };
 
-  const changeFontSize = (size: string) => {
-    setTextStyles((prev) => ({ ...prev, fontSize: size }));
-    textAreaRef.current?.focus();
-  };
-
-  const changeTextColor = (color: string) => {
-    setTextStyles((prev) => ({ ...prev, color }));
-    textAreaRef.current?.focus();
-  };
-
-  const setTextAlign = (align: string) => {
-    setTextStyles((prev) => ({ ...prev, textAlign: align }));
-    textAreaRef.current?.focus();
+  const executeCommand = (
+    command: string,
+    value: string | undefined = undefined
+  ) => {
+    document.execCommand(command, false, value);
+    handleContentChange();
   };
 
   return (
@@ -234,90 +205,66 @@ const Collab: React.FC = () => {
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
         <div className="border-b border-gray-200 px-4 py-2 flex gap-2">
           <button
-            onClick={() => toggleStyle("isBold")}
-            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
-              textStyles.isBold ? "bg-gray-100" : ""
-            }`}
+            onClick={() => executeCommand("bold")}
+            className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
           >
             <Bold size={18} />
           </button>
           <button
-            onClick={() => toggleStyle("isItalic")}
-            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
-              textStyles.isItalic ? "bg-gray-100" : ""
-            }`}
+            onClick={() => executeCommand("italic")}
+            className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
           >
             <Italic size={18} />
           </button>
           <button
-            onClick={() => toggleStyle("isUnderline")}
-            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
-              textStyles.isUnderline ? "bg-gray-100" : ""
-            }`}
+            onClick={() => executeCommand("underline")}
+            className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
           >
             <Underline size={18} />
           </button>
           <div className="h-6 w-px bg-gray-200 mx-2" />
           <button
-            onClick={() => setTextAlign("left")}
-            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
-              textStyles.textAlign === "left" ? "bg-gray-100" : ""
-            }`}
+            onClick={() => executeCommand("justifyLeft")}
+            className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
           >
             <AlignLeft size={18} />
           </button>
           <button
-            onClick={() => setTextAlign("center")}
-            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
-              textStyles.textAlign === "center" ? "bg-gray-100" : ""
-            }`}
+            onClick={() => executeCommand("justifyCenter")}
+            className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
           >
             <AlignCenter size={18} />
           </button>
           <button
-            onClick={() => setTextAlign("right")}
-            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${
-              textStyles.textAlign === "right" ? "bg-gray-100" : ""
-            }`}
+            onClick={() => executeCommand("justifyRight")}
+            className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
           >
             <AlignRight size={18} />
           </button>
           <div className="h-6 w-px bg-gray-200 mx-2" />
           <select
-            onChange={(e) => changeFontSize(e.target.value)}
+            onChange={(e) => executeCommand("fontSize", e.target.value)}
             className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
-            value={textStyles.fontSize}
           >
-            <option value="12px">12px</option>
-            <option value="16px">16px</option>
-            <option value="20px">20px</option>
-            <option value="24px">24px</option>
+            <option value="1">12px</option>
+            <option value="3">16px</option>
+            <option value="5">20px</option>
+            <option value="7">24px</option>
           </select>
           <input
             type="color"
-            onChange={(e) => changeTextColor(e.target.value)}
-            value={textStyles.color}
+            onChange={(e) => executeCommand("foreColor", e.target.value)}
             className="w-8 h-8 border rounded cursor-pointer"
           />
         </div>
 
-        <div ref={editorRef} className="relative">
-          <textarea
-            ref={textAreaRef}
-            className="w-full px-4 py-3 resize-none focus:outline-none min-h-[400px] font-mono"
-            value={content}
-            onChange={handleContentChange}
-            placeholder="Start typing here..."
-            style={{
-              fontWeight: textStyles.isBold ? "bold" : "normal",
-              fontStyle: textStyles.isItalic ? "italic" : "normal",
-              textDecoration: textStyles.isUnderline ? "underline" : "none",
-              textAlign: textStyles.textAlign as "left" | "center" | "right",
-              fontSize: textStyles.fontSize,
-              color: textStyles.color,
-            }}
-          />
-        </div>
+        <div
+          ref={editorRef}
+          className="w-full px-4 py-3 min-h-[400px] focus:outline-none"
+          contentEditable
+          onInput={handleContentChange}
+          style={{ fontFamily: "monospace" }}
+        />
       </div>
 
       {isSaving && (
