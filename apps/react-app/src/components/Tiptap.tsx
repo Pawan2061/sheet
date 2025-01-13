@@ -15,12 +15,14 @@ import Bold from "@tiptap/extension-bold";
 import Youtube from "@tiptap/extension-youtube";
 import { debounce } from "lodash";
 import { EditorContent, useEditor } from "@tiptap/react";
-import { Film, Image as ImageIcon, Wand2 } from "lucide-react";
+import { Download, Film, Image as ImageIcon, Wand2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { BubbleMenuTip } from "./ui/bubble";
+import { useParams } from "react-router-dom";
 import AIPromptModal from "./ui/prompt";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+
 const CustomYoutubeExtension = Youtube.configure({
   HTMLAttributes: {
     class: "w-full aspect-video rounded-lg shadow-lg my-4",
@@ -33,6 +35,72 @@ const CustomYoutubeExtension = Youtube.configure({
 
 export default function Tiptap() {
   const [isOpen, setIsOpen] = useState(false);
+  const param = useParams();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const handleExport = () => {
+    try {
+      if (!editor) return;
+
+      const content = editor.getHTML();
+
+      const styledContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>${param?.id || "Document"}</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              line-height: 1.6;
+              margin: 20px;
+              max-width: 800px;
+              margin: 0 auto;
+              padding: 20px;
+            }
+            img {
+              max-width: 100%;
+              height: auto;
+            }
+            iframe {
+              width: 100%;
+              aspect-ratio: 16/9;
+              border: none;
+              border-radius: 8px;
+              margin: 1rem 0;
+            }
+          </style>
+        </head>
+        <body>
+          ${content}
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob([styledContent], {
+        type: "text/html;charset=utf-8",
+      });
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${param?.id || "document"}.html`;
+
+      link.click();
+
+      window.URL.revokeObjectURL(url);
+
+      setToastMessage("Document exported successfully!");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    } catch (error) {
+      setToastMessage("Failed to export document. Please try again.");
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    }
+  };
 
   const logContent = useCallback((editor: Editor) => {
     console.log(editor.getJSON());
@@ -75,6 +143,7 @@ export default function Tiptap() {
   });
 
   if (!editor) return null;
+
   const mutation = useMutation({
     mutationFn: async (prompt: string) => {
       const response = await axios.post("http://localhost:3001/ask", {
@@ -83,9 +152,6 @@ export default function Tiptap() {
       return response.data;
     },
     onSuccess: (data) => {
-      console.log(data, "data is here");
-      console.log(data.response);
-
       editor?.commands.insertContent(data);
     },
     onError: (error) => {
@@ -93,6 +159,7 @@ export default function Tiptap() {
       editor?.commands.insertContent("Error: Failed to get AI response");
     },
   });
+
   const handlePromptSubmit = async (prompt: string) => {
     mutation.mutate(prompt);
     setIsOpen(false);
@@ -144,7 +211,19 @@ export default function Tiptap() {
             onClose={() => setIsOpen(false)}
             onSubmit={handlePromptSubmit}
           />
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            <Download size={16} />
+            Export
+          </button>
         </div>
+        {showToast && (
+          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 p-4 bg-blue-500 text-white rounded-lg shadow-lg transition-opacity duration-300">
+            <p>{toastMessage}</p>
+          </div>
+        )}
 
         <motion.div
           className="border rounded-lg p-4 min-h-[400px] bg-gray-50"

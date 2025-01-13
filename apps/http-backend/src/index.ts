@@ -22,7 +22,5 @@ app.use("/api/v1", approuter);
 app.use("/ask", createAnswer);
 
 app.listen(3001, () => {
-  console.log(OPENAI_API_KEY, "Key is here");
-
   console.log(`working on port ${8080}`);
 });

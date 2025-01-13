@@ -20,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 
 const Collab: React.FC = () => {
   const navigate = useNavigate();
-  const [content, setContent] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const websocketRef = useRef<WebSocket | null>(null);
   const [isSaving, setIsSaving] = useState(false);
