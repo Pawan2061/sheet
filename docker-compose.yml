@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  frontend:
+    image: pawan063/tiptapfrontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    image: pawan063/tiptapbackend
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_PASSWORD=${JWT_PASSWORD}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+    depends_on:
+      - ws
+    networks:
+      - app-network
+
+  ws:
+    image: pawan063/tiptapws
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
