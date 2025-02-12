@@ -30,6 +30,7 @@ const Collab: React.FC = () => {
   const editorRef = useRef<HTMLDivElement>(null);
 
   const user = useRecoilValue(authState);
+  console.log(userCount);
 
   if (!user) {
     navigate("/join");
@@ -43,7 +44,6 @@ const Collab: React.FC = () => {
 
     ws.onopen = () => {
       setIsConnected(true);
-      setUserCount((prev) => prev + 1);
       ws.send(
         JSON.stringify({
           type: "join",
@@ -54,30 +54,60 @@ const Collab: React.FC = () => {
 
     ws.onmessage = (event) => {
       const { type, payload } = JSON.parse(event.data);
-      if (type === "init" || type === "update") {
-        setToastMessage(`${user.user.username} has joined!`);
-        setShowToast(true);
+
+      switch (type) {
+        case "init":
+          if (payload.userCount !== undefined) {
+            setUserCount(payload.userCount);
+          }
+          if (editorRef.current) {
+            editorRef.current.innerHTML = payload.content || "";
+          }
+          // setTimeout(() => {
+          setToastMessage(`${user.user.username} has joined!`);
+          setShowToast(true);
+          // }, 3000);
+
+          break;
+
+        case "userJoined":
+          setUserCount(payload.userCount);
+          setToastMessage(`${payload.username} has joined!`);
+          setShowToast(true);
+          break;
+
+        case "userLeft":
+          setUserCount(payload.userCount);
+          setToastMessage(`${payload.username} has left`);
+          setShowToast(true);
+          break;
+
+        case "update":
+          if (editorRef.current) {
+            editorRef.current.innerHTML = payload.content || "";
+          }
+          break;
+      }
+
+      // Delay toast hide to avoid redundant re-renders
+      if (showToast) {
         setTimeout(() => setShowToast(false), 3000);
-        if (editorRef.current) {
-          editorRef.current.innerHTML = payload.content || "";
-        }
       }
     };
 
     ws.onclose = () => {
       setIsConnected(false);
-      setUserCount((prev) => Math.max(0, prev - 1));
     };
 
     ws.onerror = () => {
       setIsConnected(false);
-      setUserCount((prev) => Math.max(0, prev - 1));
     };
 
     websocketRef.current = ws;
     return () => ws.close();
   }, []);
 
+  // Function for handling content changes and debouncing updates
   const handleContentChange = () => {
     if (editorRef.current) {
       const newContent = editorRef.current.innerHTML;
@@ -90,6 +120,7 @@ const Collab: React.FC = () => {
         })
       );
 
+      // Delay saving indicator
       setTimeout(() => setIsSaving(false), 500);
     }
   };
@@ -166,12 +197,12 @@ const Collab: React.FC = () => {
         </div>
       )}
 
-      <div className="flex items-center justify-between mb-4 bg-white rounded-lg p-3 shadow-sm">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-4 bg-white rounded-lg p-3 shadow-sm">
+        <div className="flex items-center gap-4 mb-4 md:mb-0">
           <h2 className="text-xl font-semibold">Collaborative Editor</h2>
           <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100">
             <Users size={16} className="text-gray-600" />
-            <span className="text-sm text-gray-600">{userCount} online</span>
+            {/* <span className="text-sm text-gray-600">{userCount} online</span> */}
           </div>
           <div
             onClick={() => navigate("/")}
@@ -202,7 +233,7 @@ const Collab: React.FC = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="border-b border-gray-200 px-4 py-2 flex gap-2">
+        <div className="border-b border-gray-200 px-4 py-2 flex gap-2 flex-wrap">
           <button
             onClick={() => executeCommand("bold")}
             className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"

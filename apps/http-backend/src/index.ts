@@ -1,8 +1,4 @@
 import express from "express";
-import jwt from "jsonwebtoken";
-import { prismaClient } from "@repo/prisma/client";
-import bcrypt from "bcrypt";
-import { JWT_PASSWORD, OPENAI_API_KEY } from "./config";
 import dotenv from "dotenv";
 import cors from "cors";
 import { approuter } from "./routes";
