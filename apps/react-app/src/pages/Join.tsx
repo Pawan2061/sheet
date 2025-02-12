@@ -80,15 +80,15 @@ export default function Join() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-slate-50 p-4">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
-        <h2 className="text-center text-3xl mb-6 text-[#2a2821]">
-          {isLogin ? "Welcome Back" : "Sign Up"}
+        <h2 className="text-center text-3xl mb-6 text-gray-800 font-semibold">
+          {isLogin ? "Welcome Back" : "Create an Account"}
         </h2>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-[#777672] mb-2" htmlFor="username">
+            <label className="block text-gray-600 mb-2" htmlFor="username">
               Username
             </label>
             <input
@@ -96,13 +96,13 @@ export default function Join() {
               id="username"
               name="username"
               placeholder="Enter your username"
-              className="w-full p-4 border border-[#777672] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#777672] transition duration-200"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition duration-200"
               required
             />
           </div>
 
           <div>
-            <label className="block text-[#777672] mb-2" htmlFor="password">
+            <label className="block text-gray-600 mb-2" htmlFor="password">
               Password
             </label>
             <input
@@ -110,7 +110,7 @@ export default function Join() {
               id="password"
               name="password"
               placeholder="Enter your password"
-              className="w-full p-4 border border-[#777672] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#777672] transition duration-200"
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300 transition duration-200"
               required
             />
           </div>
@@ -118,31 +118,32 @@ export default function Join() {
           <div className="text-center">
             <button
               type="submit"
-              className={`w-full py-3 ${loading ? "bg-gray-400" : "bg-[#777672]"} text-white rounded-lg hover:bg-[#5a5a5a] transition duration-200`}
+              className={`w-full py-3 ${loading ? "bg-gray-300" : "bg-slate-200"} text-gray-800 rounded-lg hover:bg-slate-300 transition duration-200`}
               disabled={loading}
             >
               {loading ? "Loading..." : isLogin ? "Login" : "Sign Up"}
             </button>
           </div>
 
-          {/* <div className="text-center">
+          {/* New Button */}
+          <div className="text-center">
             <button
               type="button"
-              className="w-full py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
-              onClick={() => alert("New Button Clicked!")}
+              className="w-full py-3 bg-slate-200 text-gray-800 rounded-lg hover:bg-slate-300 transition duration-200"
+              onClick={() => alert("New Action Clicked!")}
             >
               New Action
             </button>
-          </div> */}
+          </div>
         </form>
 
         <div className="text-center mt-4">
-          <p className="text-[#777672] cursor-pointer" onClick={toggleForm}>
+          <p className="text-gray-600 cursor-pointer" onClick={toggleForm}>
             {isLogin
               ? "Don't have an account? Sign Up"
               : "Already have an account? Login"}
           </p>
-          <p className="text-red-300 cursor-pointer" onClick={toggleForm}>
+          <p className="text-red-500 cursor-pointer" onClick={toggleForm}>
             {error ? error : ""}
           </p>
         </div>

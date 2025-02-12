@@ -180,25 +180,25 @@ export default function Tiptap() {
   }, [editor]);
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-6 rounded-2xl shadow-2xl">
+    <div className="w-full max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
       <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <button
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex-1"
             onClick={addImage}
           >
             <ImageIcon className="w-4 h-4" />
             <span>Add Image</span>
           </button>
           <button
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex-1"
             onClick={addVideo}
           >
             <Film className="w-4 h-4" />
             <span>Add Video</span>
           </button>
           <button
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 flex-1"
             onClick={() => {
               setIsOpen(!isOpen);
             }}
@@ -213,7 +213,7 @@ export default function Tiptap() {
           />
           <button
             onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex-1"
           >
             <Download size={16} />
             Export

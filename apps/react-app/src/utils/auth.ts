@@ -3,7 +3,7 @@ export async function signup({ username, password }: any) {
   try {
     console.log("inside signup");
 
-    const response = await axios.post("http://localhost:3001/api/v1/signup", {
+    const response = await axios.post(`http://localhost:3001/api/v1/signup`, {
       username,
       password,
     });
