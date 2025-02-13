@@ -100,7 +100,6 @@ export default function Join() {
               required
             />
           </div>
-
           <div>
             <label className="block text-gray-600 mb-2" htmlFor="password">
               Password
@@ -114,7 +113,6 @@ export default function Join() {
               required
             />
           </div>
-
           <div className="text-center">
             <button
               type="submit"
@@ -124,8 +122,7 @@ export default function Join() {
               {loading ? "Loading..." : isLogin ? "Login" : "Sign Up"}
             </button>
           </div>
-
-          {/* New Button */}
+          {/* New Button
           <div className="text-center">
             <button
               type="button"
@@ -134,7 +131,7 @@ export default function Join() {
             >
               New Action
             </button>
-          </div>
+          </div> */}
         </form>
 
         <div className="text-center mt-4">
