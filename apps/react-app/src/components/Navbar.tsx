@@ -17,6 +17,7 @@ export default function Navbar() {
     localStorage.removeItem("user");
     resetAuth();
     navigate("/");
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -35,9 +36,9 @@ export default function Navbar() {
             onClick={() => {
               navigate("/join");
             }}
-            className="text-[#777672] text-sm px-1 rounded-md duration-0 hover:bg-gray-200 py-2"
+            className="text-[#777672] text-sm px-4 py-2 rounded-md duration-200 hover:bg-gray-200 transition-colors transform hover:scale-105"
           >
-            Login
+            Get In
           </button>
         ) : (
           <div className="flex items-center space-x-4">
@@ -52,19 +53,19 @@ export default function Navbar() {
       </div>
 
       {isModalOpen && (
-        <div className="absolute top-4 right-4 bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 shadow-lg w-64">
+        <div className="absolute top-4 right-4 bg-black  rounded-xl">
+          <div className="bg-gray-400 rounded-lg p-6 shadow-lg w-64 transition-transform transform scale-95 hover:scale-100 duration-300">
             <h2 className="text-lg font-semibold mb-4">Confirm Logout</h2>
             <p>Are you sure you want to log out?</p>
-            <div className="mt-4 flex justify-end">
+            <div className="mt-4 flex justify-end space-x-2">
               <button
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md mr-2"
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md transition-colors duration-200 hover:bg-gray-400 transform hover:scale-105"
                 onClick={() => setIsModalOpen(false)}
               >
                 No
               </button>
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md transition-colors duration-200 hover:bg-blue-600 transform hover:scale-105"
                 onClick={handleLogout}
               >
                 Yes

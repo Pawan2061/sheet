@@ -39,6 +39,9 @@ export default function Tiptap() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // State to track if the editor is empty
+  const [isEditorEmpty, setIsEditorEmpty] = useState(true);
+
   const handleExport = () => {
     try {
       if (!editor) return;
@@ -166,9 +169,30 @@ export default function Tiptap() {
   };
 
   const addImage = useCallback(() => {
-    const url = window.prompt("Enter image URL");
-    if (url) {
-      editor?.commands.setImage({ src: url });
+    const choice = window.prompt(
+      "Type 'url' to paste an image URL or 'upload' to upload a local image."
+    );
+
+    if (choice?.toLowerCase() === "url") {
+      const url = window.prompt("Enter image URL");
+      if (url) {
+        editor?.commands.setImage({ src: url });
+      }
+    } else if (choice?.toLowerCase() === "upload") {
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.accept = "image/*";
+      fileInput.onchange = async (event) => {
+        const file = event.target.files?.[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            editor?.commands.setImage({ src: reader.result as string });
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      fileInput.click();
     }
   }, [editor]);
 
@@ -178,6 +202,16 @@ export default function Tiptap() {
       editor?.commands.setYoutubeVideo({ src: url, width: 720, height: 405 });
     }
   }, [editor]);
+
+  const handleContentChange = () => {
+    if (editor) {
+      const newContent = editor.getHTML();
+      setIsEditorEmpty(newContent.trim() === "");
+      if (newContent.trim() !== "") {
+        setIsEditorEmpty(false);
+      }
+    }
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -226,12 +260,21 @@ export default function Tiptap() {
         )}
 
         <motion.div
-          className="border rounded-lg p-4 min-h-[400px] bg-gray-50"
+          className="border rounded-lg p-4 min-h-[400px] bg-gray-50 relative"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <EditorContent editor={editor} />
+          {isEditorEmpty && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <span className="text-gray-400">Start typing here...</span>
+            </div>
+          )}
+          <EditorContent
+            editor={editor}
+            className="focus:outline-none p-4 text-lg leading-relaxed border border-gray-300 rounded-md shadow-sm bg-white"
+            onInput={handleContentChange}
+          />
           {editor && <BubbleMenuTip editor={editor} />}
         </motion.div>
       </div>
