@@ -185,7 +185,8 @@ export default function Tiptap() {
       fileInput.type = "file";
       fileInput.accept = "image/*";
       fileInput.onchange = async (event) => {
-        const file = event.target.files?.[0];
+        // @ts-ignore
+        const file = event.target.file?.[0];
         if (file) {
           const reader = new FileReader();
           reader.onloadend = () => {
