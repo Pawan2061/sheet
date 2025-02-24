@@ -66,13 +66,14 @@ export default function Tiptap() {
             img {
               max-width: 100%;
               height: auto;
+              margin-bottom: 20px;
             }
             iframe {
               width: 100%;
               aspect-ratio: 16/9;
               border: none;
               border-radius: 8px;
-              margin: 1rem 0;
+              margin: 1rem 0 20px;
             }
           </style>
         </head>
@@ -177,6 +178,7 @@ export default function Tiptap() {
       const url = window.prompt("Enter image URL");
       if (url) {
         editor?.commands.setImage({ src: url });
+        editor?.commands.focus();
       }
     } else if (choice?.toLowerCase() === "upload") {
       const fileInput = document.createElement("input");
@@ -188,6 +190,7 @@ export default function Tiptap() {
           const reader = new FileReader();
           reader.onloadend = () => {
             editor?.commands.setImage({ src: reader.result as string });
+            editor?.commands.focus();
           };
           reader.readAsDataURL(file);
         }
@@ -200,6 +203,7 @@ export default function Tiptap() {
     const url = window.prompt("Enter YouTube URL");
     if (url) {
       editor?.commands.setYoutubeVideo({ src: url, width: 720, height: 405 });
+      editor?.commands.focus();
     }
   }, [editor]);
 

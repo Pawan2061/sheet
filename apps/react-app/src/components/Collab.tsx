@@ -28,6 +28,7 @@ const Collab: React.FC = () => {
   const [userCount, setUserCount] = useState(0);
   const [sheetName, setSheetName] = useState<string>("");
   const editorRef = useRef<HTMLDivElement>(null);
+  const [selectedFormat, setSelectedFormat] = useState<string | null>(null);
 
   const user = useRecoilValue(authState);
   console.log(userCount);
@@ -63,10 +64,8 @@ const Collab: React.FC = () => {
           if (editorRef.current) {
             editorRef.current.innerHTML = payload.content || "";
           }
-          // setTimeout(() => {
           setToastMessage(`${user.user.username} has joined!`);
           setShowToast(true);
-          // }, 3000);
 
           break;
 
@@ -89,7 +88,6 @@ const Collab: React.FC = () => {
           break;
       }
 
-      // Delay toast hide to avoid redundant re-renders
       if (showToast) {
         setTimeout(() => setShowToast(false), 3000);
       }
@@ -107,7 +105,6 @@ const Collab: React.FC = () => {
     return () => ws.close();
   }, []);
 
-  // Function for handling content changes and debouncing updates
   const handleContentChange = () => {
     if (editorRef.current) {
       const newContent = editorRef.current.innerHTML;
@@ -120,7 +117,6 @@ const Collab: React.FC = () => {
         })
       );
 
-      // Delay saving indicator
       setTimeout(() => setIsSaving(false), 500);
     }
   };
@@ -178,6 +174,7 @@ const Collab: React.FC = () => {
   ) => {
     document.execCommand(command, false, value);
     handleContentChange();
+    setSelectedFormat(command);
   };
 
   return (
@@ -236,19 +233,19 @@ const Collab: React.FC = () => {
         <div className="border-b border-gray-200 px-4 py-2 flex gap-2 flex-wrap">
           <button
             onClick={() => executeCommand("bold")}
-            className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
+            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${selectedFormat === "bold" ? "shadow-lg underline" : ""}`}
           >
             <Bold size={18} />
           </button>
           <button
             onClick={() => executeCommand("italic")}
-            className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
+            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${selectedFormat === "italic" ? "shadow-lg underline" : ""}`}
           >
             <Italic size={18} />
           </button>
           <button
             onClick={() => executeCommand("underline")}
-            className="px-3 py-1 border rounded hover:bg-gray-50 transition-colors"
+            className={`px-3 py-1 border rounded hover:bg-gray-50 transition-colors ${selectedFormat === "underline" ? "shadow-lg underline" : ""}`}
           >
             <Underline size={18} />
           </button>
@@ -280,6 +277,7 @@ const Collab: React.FC = () => {
             <option value="3">16px</option>
             <option value="5">20px</option>
             <option value="7">24px</option>
+            <option value="9">28px</option>
           </select>
           <input
             type="color"
